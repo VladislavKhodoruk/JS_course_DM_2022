@@ -1,0 +1,1 @@
+https://www.figma.com/file/ylsLHlFyAcPqllTr4WsJsc/JS_course_2022?node-id=206%3A8
