@@ -1,0 +1,75 @@
+html,body
+{
+    background-color: #ececec;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    overflow: hidden;
+    padding: 1.5rem 3rem;
+}
+main
+{
+    align-items: center;
+    background-color: #ececec;
+    display: flex;
+    height: 40rem;
+    justify-content: center;
+    width: 100%;
+}
+.modal-window
+{
+    align-items: center;
+    display: flex;
+    background-color: white;
+    border-radius: 0.4rem;
+    flex-direction: column;
+    padding: 1rem 1rem;
+    width: 30rem;
+}
+.modal-window-top
+{
+    align-items: center;
+    display: flex;
+    font-size: 1.3rem;
+    justify-content: space-between;
+    width: 100%;
+}
+hr
+{
+    border: none;
+    background-color: #ececec;
+    height: 1px;
+    width: 100%;
+}
+.modal-window-bottom
+{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+.close-button
+{
+    background-color: #6c757d;
+    border: none;
+    border-radius: 0.3rem;
+    color: white;
+    font-size: 1rem;
+    margin: 0.5rem;
+    padding: 0.8rem 1.2rem;
+}
+.save-changes-button
+{
+    background-color: #1c7bff;
+    border: none;
+    border-radius: 0.3rem;
+    color: white;
+    font-size: 1rem;
+    margin: 0.5rem;
+    padding: 0.8rem 1.2rem;
+}
+.close-button:hover, .save-changes-button:hover
+{
+    cursor: pointer;
+    opacity: 0.8;
+    transition: 0.2s;
+}
