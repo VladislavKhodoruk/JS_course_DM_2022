@@ -3,28 +3,41 @@
 }
 :root
 {
+    --dark-p: #6567AD;
     --default-br: 0.4rem;
+    --grey: #747474;
+    --light-p: #a8a9d0;
+    --mint: #a3f0d5;
+    --yellow: #dec865;
 }
 p
 {
     margin: 0;
+}
+html
+{
+    height: 100%;
+    width: 100%;
 }
 body
 {
     background-color: #ececec;
     font-size: 16px;
     font-family: 'Open Sans', sans-serif;
+    height: 100%;
     margin: 0;
     overflow: hidden;
     padding: 1.5rem 3rem;
+    width: 100%;
 } 
 header
 {
     align-items: center;
-    background-color: white;
+    background-color: #FFF;
     border-radius: var(--default-br);
     display: flex;
     font-size: 1.8rem;
+    height: 12%;
     justify-content: space-between;
     padding: 0 2.5rem;
 }
@@ -39,10 +52,11 @@ header
 }
 .exit-button, .edit-delete-button
 {
-    background-color: white;
+    background-color: #FFF;
     border: none;
 }
-.exit-button:hover, .edit-delete-button:hover, .tweet-button:hover, .show-more-button:hover, .logo:hover, .reset-button:hover
+.exit-button:hover, .edit-delete-button:hover, .tweet-comment-button:hover,
+.show-more-button:hover, .logo:hover, .reset-button:hover, .filter-button:hover
 {
     cursor: pointer;
     opacity: 0.8;
@@ -52,7 +66,7 @@ header
 {
     height: 3.5rem;
     width: 3.5rem;
-    color: #6567AD;
+    color: var(--dark-p);
 }
 .main-main
 {
@@ -84,7 +98,7 @@ header
     background-color: #FFF;
     border: none;
     border-radius: var(--default-br);
-    margin: 0rem 0rem 1rem 0rem;
+    margin-top: 1rem;
     outline: none;
     padding: 1rem 1rem;
     width: 100%;
@@ -99,16 +113,16 @@ header
 }
 .tweet-comment-button, .show-more-button
 {
-    background-color: #6567AD;
+    background-color: var(--dark-p);
     border: none;
     border-radius: 0.3rem;
-    color: white;
+    color: #FFF;
     font-size: 1.3rem;
     padding: 0.2rem 0.4rem;
 }
 #plus, #arrow
 {
-    color: #a3f0d5;
+    color: var(--mint);
     height: 1.2rem;
     width: 1.2rem;
 }
@@ -116,7 +130,7 @@ article
 {
     align-items: center;
     display: flex;
-    background-color: white;
+    background-color: #FFF;
     border-radius: var(--default-br);
     flex-direction: column;
     max-height: 35rem;
@@ -134,18 +148,18 @@ article
 {
     background-color: #FFF;
     border-radius: var(--default-br);
-    box-shadow: 0 0 0.35rem #a8a9d0;
+    box-shadow: 0 0 0.35rem var(--light-p);
     padding: 1rem 1rem;
     margin: 1rem;
     width: 100%;
 }
 .twit:hover
 {
-    box-shadow: 0 0 0.35rem #6567AD;
+    box-shadow: 0 0 0.35rem var(--dark-p);
 }
 #twit:hover
 {
-    box-shadow: 0 0 0.35rem #a8a9d0;
+    box-shadow: 0 0 0.35rem var(--light-p);
 }
 .twit-top
 {
@@ -171,12 +185,12 @@ article
 }
 .post-date
 {
-    color: #a8a9d0;
+    color: var(--light-p);
     font-size: 0.8rem;
 }
 #edit, #delete
 {
-    color: #a8a9d0;
+    color: var(--light-p);
     height: 1.8rem;
     width: 1.8rem;
 }
@@ -184,26 +198,27 @@ article
 {
     margin-bottom: 1rem;
 }
+.hashtag
+{
+    color:var(--yellow)
+}
 .comments, .from-to
 {
-    background-color: #a8a9d0;
+    background-color: var(--light-p);
     border-radius: 10rem;
-    color: white;
-    padding-top: 0.4rem;
-    padding-right: 0.4rem;
-    padding-bottom: 0.2rem;
-    padding-left: 0.4rem;
+    color: #FFF;
+    padding: 0.4rem 0.4rem 0.2rem 0.4rem;
 }
 #comment
 {
-    color: white;
+    color: #FFF;
     height: 1.2rem;
     width: 1.2rem;
 }
 nav
 {
     align-items: center;
-    background-color: white;
+    background-color: #FFF;
     border-radius: var(--default-br);
     display: flex;
     flex-direction: column;
@@ -220,7 +235,7 @@ nav
 }
 .filter-header
 {
-    background-color: #6567AD;
+    background-color: var(--dark-p);
     border-radius: var(--default-br);
     color: #FFF;
     font-size: 1.3rem;
@@ -228,14 +243,14 @@ nav
     text-align: center;
     width: 100%;
 }
-.authors-list, .form
+.form
 {
     align-items: center;
     display: flex;
     flex-direction: column;
     border: none;
     border-radius: var(--default-br);
-    box-shadow: 0 0 0.35rem #a8a9d0;
+    box-shadow: 0 0 0.35rem var(--light-p);
     font-size: 1rem;
     margin: 0.5rem;
     outline: none;
@@ -243,10 +258,10 @@ nav
 }
 .reset-button
 {
-    background-color: #6567AD;
+    background-color: var(--dark-p);
     border: none;
     border-radius: 0.3rem;
-    color: white;
+    color: #FFF;
     font-size: 1rem;
     margin: 0.5rem;
     padding: 0.2rem 0.4rem;
@@ -258,7 +273,7 @@ nav
 .date
 {
     border: none;
-    box-shadow: 0 0 0.35rem #a8a9d0;
+    box-shadow: 0 0 0.35rem var(--light-p);
     font-size: 1rem;
     margin: 0rem 0rem;
     outline: none;
@@ -267,7 +282,7 @@ nav
 .text-area
 {
     border: none;
-    box-shadow: 0 0 0.35rem #a8a9d0;
+    box-shadow: 0 0 0.35rem var(--light-p);
     font-size: 1rem;
     margin: 0rem 0rem;
     outline: none;
@@ -275,10 +290,10 @@ nav
 }
 .filter-button
 {
-    background-color: #a3f0d5;
+    background-color: var(--mint);
     border: none;
     border-radius: 10rem;
-    color: white;
+    color: #FFF;
     font-size: 1.3rem;
     margin-top: 1rem;
     padding: 0.2rem 0.8rem;
@@ -286,11 +301,11 @@ nav
 footer
 {
     align-items: center;
-    color: #747474;
+    color: var(--grey);
     display: flex;
     flex-direction: column;
     font-size: 1rem;
-    height: 4rem;
+    height: 5%;
     margin-top: 1rem;
     justify-content: center;
     width: 100%;
