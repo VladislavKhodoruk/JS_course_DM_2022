@@ -1,0 +1,147 @@
+*{
+    box-sizing: border-box;
+}
+:root
+{
+    --default-br: 0.5rem;
+    --orange: #ff6f32;
+}
+html
+{
+    height: 100%;
+    width: 100%;
+}
+body
+{
+    background-color: #eff1f4;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    padding: 1.5rem 3rem;
+    width: 100%;
+    overflow-y: auto;
+}
+main
+{
+    align-items: center;
+    background-color: #eff1f4;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    height: 40rem;
+    justify-content: center;
+    width: 100%;
+}
+section
+{
+    background-color: #FFF;
+    border-radius: var(--default-br);
+    display: flex;
+    width: 800px;
+    margin: 3rem 3rem;
+}
+section:hover
+{
+    cursor: pointer;
+    opacity: 0.8;
+    transition: 0.2s;
+}
+.left-side
+{
+    align-items: center;
+    border-right-color: #e4e7e8;
+    border-right-style: solid;
+    border-right-width: 0.1rem;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.4rem;
+    height: 100%;
+    padding: 2rem 2rem;
+    width: 40%;
+}
+.choose-ticket
+{
+    background-color: var(--orange);
+    border-radius: var(--default-br);
+    color: #FFF;
+    padding: 1rem 3rem;
+}
+.right-side
+{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.4rem;
+    height: 100%;
+    padding: 2rem 2rem;
+    width: 60%;
+}
+.top-icons
+{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.button
+{
+    background-color: #FFF;
+    border: none;
+    border-radius: 5rem;
+    box-shadow: 0 0 0.35rem grey;
+    margin: 0.5rem;
+    padding: 0.2rem 0.2rem;
+}
+#moon, #clock, #luggage
+{
+    color: blue;
+    height: 1.2rem;
+    width: 1.2rem;
+}
+#bell
+{
+    color: #747474;
+    height: 1.4rem;
+    width: 1.4rem;
+}
+#bell:hover
+{
+    color: blue;
+    transition: 0.2s;
+}
+.mid
+{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.mid-side
+{
+    display: flex;
+    color: #747474;
+    flex-direction: column;
+}
+.small-text
+{
+    font-size: 1rem;
+}
+.mid-center
+{
+    align-items: center;
+    display: flex;
+    color: #747474;
+    flex-direction: column;
+    width: 30%;
+}
+.planes
+{
+    display: flex;
+    color: #747474;
+    justify-content: space-between;
+    width: 100%;
+}
+#line
+{
+    width: 12rem;
+}
