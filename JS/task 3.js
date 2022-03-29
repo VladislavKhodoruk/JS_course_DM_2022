@@ -1,15 +1,15 @@
-function Tweet(id, text, createdAt, author) {
-  (this.id = id),
-    (this.text = text),
-    (this.createdAt = createdAt),
-    (this.author = author),
-    (this.comments = []);
+function tweet(id, text, createdAt, author) {
+  this.id = id;
+  this.text = text;
+  this.createdAt = createdAt;
+  this.author = author;
+  this.comments = [];
 }
-function Comment(id, text, createdAt, author) {
-  (this.id = id),
-    (this.text = text),
-    (this.createdAt = createdAt),
-    (this.author = author);
+function comment(id, text, createdAt, author) {
+  this.id = id;
+  this.text = text;
+  this.createdAt = createdAt;
+  this.author = author;
 }
 const arrTweets = [];
 let _id = 0;
@@ -49,10 +49,10 @@ for (let i = 0; i < 20; i++) {
     " " +
     loremIpsum[_id + 2] +
     `#js${_id}`;
-  newTweet = new Tweet(
+  newTweet = new tweet(
     _id,
     string,
-    defaultDate.setDate(defaultDate.getDate() + _id),
+    new Date(defaultDate.setDate(defaultDate.getDate() + _id)),
     defaultUser + `${_id}`
   );
   arrTweets.push(newTweet);
@@ -60,16 +60,16 @@ for (let i = 0; i < 20; i++) {
 }
 const Module = (function () {
   let user;
-  const getTweets = function (skip = 0, top = 0, filterConfig) {
+  const getTweets = function (skip = 0, top = 0, filterConfig = {}) {
     //использую skip и top как счётчики
     let getNewArr = [];
     for (let Tweet of arrTweets) {
-      if (filterConfig.author !== undefined) {
+      if (filterConfig.author) {
         if (Tweet.author !== filterConfig.author) {
           continue;
         }
       }
-      if (filterConfig.dateFrom !== undefined) {
+      if (filterConfig.dateFrom) {
         if (
           !(
             Tweet.createdAt >= filterConfig.dateFrom &&
@@ -79,7 +79,7 @@ const Module = (function () {
           continue;
         }
       }
-      if (filterConfig.text !== undefined) {
+      if (filterConfig.text) {
         if (
           !Tweet.text
             .toLowerCase()
@@ -88,12 +88,16 @@ const Module = (function () {
           continue;
         }
       }
-      if (filterConfig.hashtags !== undefined) {
-        if (
-          !Tweet.text
-            .toLowerCase()
-            .includes(filterConfig.hashtags.trim().toLowerCase())
-        ) {
+      if (filterConfig.hashtags) {
+        arrHashtags = filterConfig.hashtags.toLowerCase().trim().split("#");
+        let indicator = false;
+        for (Hashtag of arrHashtags) {
+          if (!Tweet.text.toLowerCase().includes(Hashtag)) {
+            indicator = true;
+            break;
+          }
+        }
+        if (indicator) {
           continue;
         }
       }
@@ -119,27 +123,19 @@ const Module = (function () {
     }
   };
   const validateTweet = function (Tweet) {
-    if (
-      Tweet.id === undefined ||
-      Tweet.text === undefined ||
-      Tweet.createdAt === undefined ||
-      Tweet.author === undefined
-    ) {
-      return false;
-    } else if (
-      Tweet.text.length >= 280 ||
-      Tweet.text === "" ||
-      Tweet.author === ""
-    ) {
-      return false;
-    }
-    return true;
+    return (
+      Tweet.id &&
+      Tweet.text &&
+      Tweet.createdAt &&
+      Tweet.author &&
+      Tweet.text.length <= 280
+    );
   };
   const addTweet = function (string) {
-    if (this.user !== undefined) {
+    if (this.user) {
       //неавторизованный пользователь не может писать твиты
       let date = new Date();
-      newTweet = new Tweet(_id, string.trim(), date, this.user);
+      newTweet = new tweet(_id, string.trim(), date, this.user);
       if (validateTweet(newTweet)) {
         //проверка твита на валидность
         arrTweets.push(newTweet);
@@ -157,9 +153,9 @@ const Module = (function () {
         удачи сохранять изменения. таким образом, делаю проверку в ветвлении
         вместо функции validateTweet */
     if (
+      getTweet(id) &&
       this.user === getTweet(id).author &&
-      string !== "" &&
-      string !== undefined &&
+      string &&
       string.length <= 280
     ) {
       getTweet(id).text = string;
@@ -168,36 +164,30 @@ const Module = (function () {
     return false;
   };
   const removeTweet = function (id) {
-    if (this.user === getTweet(id).author) {
+    if (getTweet(id) && this.user === getTweet(id).author) {
       for (let i = 0; i < arrTweets.length; i++) {
         if (id === arrTweets[i].id) {
           arrTweets.splice(i, 1);
+          return true;
         }
       }
     }
+    return false;
   };
   const validateComment = function (Comment) {
-    if (
-      Comment.id === undefined ||
-      Comment.text === undefined ||
-      Comment.createdAt === undefined ||
-      Comment.author === undefined
-    ) {
-      return false;
-    } else if (
-      Comment.text.length >= 280 ||
-      Comment.text === "" ||
-      Comment.author === ""
-    ) {
-      return false;
-    }
-    return true;
+    return (
+      Comment.id &&
+      Comment.text &&
+      Comment.createdAt &&
+      Comment.author &&
+      Comment.text.length <= 280
+    );
   };
   const addComment = function (id, string) {
-    if (this.user !== undefined) {
+    if (getTweet(id) && this.user) {
       //неавторизованный пользователь не может писать комментарии
       let date = new Date();
-      newComment = new Comment(_id, string.trim(), date, this.user);
+      newComment = new comment(_id, string.trim(), date, this.user);
       if (validateComment(newComment)) {
         //проверка комментария на валидность
         getTweet(id).comments.push(newComment);
@@ -223,3 +213,20 @@ const Module = (function () {
     changeUser,
   };
 })();
+console.log(Module.addTweet("qwerty#hi#hello#qq"));
+console.log(Module.addComment(0, "comment"));
+Module.changeUser("Иван0");
+console.log(Module.addTweet("qwerty#hi#hello#qq"));
+console.log(Module.addTweet(""));
+console.log(Module.addComment(0, "comment"));
+console.log(Module.getTweet(0));
+console.log(Module.editTweet());
+console.log(Module.editTweet(0, "edited"));
+console.log(Module.getTweet(0));
+console.log(Module.removeTweet());
+console.log(Module.removeTweet(0));
+console.log(Module.getTweet(0));
+console.log(Module.getTweets(0, 20));
+console.log(Module.getTweets(0, 20, { text: "elit" }));
+console.log(Module.getTweets(0, 20, { text: "elit", hashtags: "#js5" }));
+console.log(Module.getTweets(0, 20, { hashtags: "#hello#qq#hi" }));
