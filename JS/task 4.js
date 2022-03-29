@@ -137,7 +137,7 @@ class TweetCollection {
       } else {
         //если необходимое количество твитов пропущено, заполняем массив
         if (top !== 0) {
-          getNewArr.push(Tweet);
+          getNewArr.push(tweet);
           top--; //заполняя массив очередным твитом, уменьшаем счётчик твитов
         } else {
           break; //если необходимое количество твитов выведено (т.е. top === 0), выходим из цикла
@@ -146,7 +146,6 @@ class TweetCollection {
     }
     return getNewArr;
   }
-
   get(id) {
     for (let tweet of this._arrTweets) {
       if (id === tweet.getId) {
