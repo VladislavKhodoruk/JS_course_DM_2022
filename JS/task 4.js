@@ -23,21 +23,13 @@ class Tweet {
     return this._author;
   }
   static validate(tweet) {
-    if (
-      tweet.getId === undefined ||
-      tweet.getText === undefined ||
-      tweet.getCreatedAt === undefined ||
-      tweet.getAuthor === undefined
-    ) {
-      return false;
-    } else if (
-      tweet.getText.length >= 280 ||
-      tweet.getText === "" ||
-      tweet.getAuthor === ""
-    ) {
-      return false;
-    }
-    return true;
+    return (
+      tweet.getId &&
+      tweet.getText &&
+      tweet.getCreatedAt &&
+      tweet.getAuthor &&
+      tweet.getText.length <= 280
+    );
   }
 }
 class Comment {
@@ -63,21 +55,13 @@ class Comment {
     return this._author;
   }
   static validate(comment) {
-    if (
-      comment.getId === undefined ||
-      comment.getText === undefined ||
-      comment.getCreatedAt === undefined ||
-      comment.getAuthor === undefined
-    ) {
-      return false;
-    } else if (
-      comment.getText.length >= 280 ||
-      сomment.getText === "" ||
-      сomment.getAuthor === ""
-    ) {
-      return false;
-    }
-    return true;
+    return (
+      comment.getId &&
+      comment.getText &&
+      comment.getCreatedAt &&
+      comment.getAuthor &&
+      comment.getText.length <= 280
+    );
   }
 }
 class TweetCollection {
@@ -96,15 +80,15 @@ class TweetCollection {
   set setUser(string) {
     this._user = string;
   }
-  getPage(skip = 0, top = 0, filterConfig) {
+  getPage(skip = 0, top = 0, filterConfig = {}) {
     let getNewArr = [];
     for (let tweet of this._arrTweets) {
-      if (filterConfig.author !== undefined) {
+      if (filterConfig.author) {
         if (tweet.getAuthor !== filterConfig.author) {
           continue;
         }
       }
-      if (filterConfig.dateFrom !== undefined) {
+      if (filterConfig.dateFrom) {
         if (
           !(
             tweet.getCreatedAt >= filterConfig.dateFrom &&
@@ -114,7 +98,7 @@ class TweetCollection {
           continue;
         }
       }
-      if (filterConfig.text !== undefined) {
+      if (filterConfig.text) {
         if (
           !tweet.getText
             .toLowerCase()
@@ -123,12 +107,16 @@ class TweetCollection {
           continue;
         }
       }
-      if (filterConfig.hashtags !== undefined) {
-        if (
-          !tweet.getText
-            .toLowerCase()
-            .includes(filterConfig.hashtags.trim().toLowerCase())
-        ) {
+      if (filterConfig.hashtags) {
+        let arrHashtags = filterConfig.hashtags.toLowerCase().trim().split("#");
+        let indicator = false;
+        for (let Hashtag of arrHashtags) {
+          if (!tweet.getText.toLowerCase().includes(Hashtag)) {
+            indicator = true;
+            break;
+          }
+        }
+        if (indicator) {
           continue;
         }
       }
@@ -146,6 +134,7 @@ class TweetCollection {
     }
     return getNewArr;
   }
+
   get(id) {
     for (let tweet of this._arrTweets) {
       if (id === tweet.getId) {
@@ -154,7 +143,7 @@ class TweetCollection {
     }
   }
   add(string) {
-    if (this._user !== undefined) {
+    if (this._user) {
       //неавторизованный пользователь не может писать твиты
       let newTweet = new Tweet(ID, string.trim(), this._user);
       if (Tweet.validate(newTweet)) {
@@ -169,9 +158,9 @@ class TweetCollection {
   }
   edit(id, string) {
     if (
+      this.get(id) &&
       this._user === this.get(id).getAuthor &&
-      string !== "" &&
-      string !== undefined &&
+      string &&
       string.length <= 280
     ) {
       this.get(id).setText = string;
@@ -180,7 +169,7 @@ class TweetCollection {
     return false;
   }
   remove(id) {
-    if (this._user === this.get(id).getAuthor) {
+    if (this.get(id) && this._user === this.get(id).getAuthor) {
       for (let i = 0; i < this._arrTweets.length; i++) {
         if (id === this._arrTweets[i].getId) {
           this._arrTweets.splice(i, 1);
@@ -191,19 +180,16 @@ class TweetCollection {
     return false;
   }
   addComment(id, string) {
-    if (this._user !== undefined) {
+    if (this.get(id) && this._user) {
       //неавторизованный пользователь не может писать комментарии
       let newComment = new Comment(ID, string.trim(), this._user);
-      // if(Comment.validate(newComment)){  //проверка комментария на валидность
-      //     this.get(id).comments.push(newComment);
-      //     ID++;
-      //     return true;
-      // }
-      // return false;
-      this.get(id).comments.push(newComment);
-      ID++;
-      return true;
-      //закомментил валидацию для демонстрации работы addComment, т.е. сама ф-ия работает, ошибка из-зи валидации
+      if (Comment.validate(newComment)) {
+        //проверка комментария на валидность
+        this.get(id).comments.push(newComment);
+        ID++;
+        return true;
+      }
+      return false;
     }
     return false;
   }
@@ -266,17 +252,21 @@ for (let i = 0; i < 20; i++) {
   ID++;
 }
 let defC = new TweetCollection(defArrTweets);
-let nonValidTweet1 = new Tweet(ID, "", defaultUser + `${ID}`); //пустое поле текста
-ID++;
-let nonValidTweet2 = new Tweet(ID, "non-valid tweet without user"); //нет пользователя
-ID++;
-let validTweet1 = new Tweet(ID, "valid 1", defaultUser + `${ID}`);
-ID++;
-let validTweet2 = new Tweet(ID, "valid 2", defaultUser + `${ID}`);
-ID++;
-let validCom = new Comment(ID, "wdwdw", defaultUser + `${ID}`);
-ID++;
-let nonValidCom = new Comment(ID, "", defaultUser + `${ID}`);
-ID++;
-validTweet1.comments = [validCom, nonValidCom];
-let nonValidTweets = [nonValidTweet1, nonValidTweet2, validTweet1, validTweet2];
+console.log(defC.add("qwerty#hi#hello#qq"));
+console.log(defC.addComment(0, "comment"));
+defC.setUser = "Иван0";
+console.log(defC.add("qwerty#hi#hello#qq"));
+console.log(defC.add(""));
+console.log(defC.addComment(1, "comment"));
+console.log(defC.get(1));
+console.log(defC.edit());
+defC.setUser = "Иван1";
+console.log(defC.edit(1, "edited"));
+console.log(defC.get(1));
+console.log(defC.remove());
+console.log(defC.remove(1));
+console.log(defC.get(1));
+console.log(defC.getPage(0, 20));
+console.log(defC.getPage(0, 20, { text: "elit" }));
+console.log(defC.getPage(0, 20, { text: "elit", hashtags: "#js5" }));
+console.log(defC.getPage(0, 20, { hashtags: "#hello#qq#hi" }));
