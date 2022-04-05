@@ -42,13 +42,9 @@ let defaultDate = new Date(1971, 0, 1);
 let defaultUser = "Иван";
 let defaultHashtag = "js";
 for (let i = 0; i < 20; i++) {
-  let string =
-    loremIpsum[_id] +
-    " " +
-    loremIpsum[_id + 1] +
-    " " +
-    loremIpsum[_id + 2] +
-    `#js${_id}`;
+  let string = `${loremIpsum[_id]} ${loremIpsum[_id + 1]} ${
+    loremIpsum[_id + 2]
+  } #js${_id}`;
   newTweet = new tweet(
     _id,
     string,
@@ -60,67 +56,52 @@ for (let i = 0; i < 20; i++) {
 }
 const Module = (function () {
   let user;
-  const getTweets = function (skip = 0, top = 0, filterConfig = {}) {
-    //использую skip и top как счётчики
+  const getTweets = function (skip = 0, top = 10, filterConfig = {}) {
+    function sortByDate(a, b) {
+      let dateA = new Date(a.createdAt);
+      let dateB = new Date(b.createdAt);
+      return dateA > dateB ? 1 : -1;
+    }
+    arrTweets.sort(sortByDate);
     let getNewArr = [];
     for (let Tweet of arrTweets) {
-      if (filterConfig.author) {
-        if (Tweet.author !== filterConfig.author) {
-          continue;
-        }
+      if (filterConfig.author && Tweet.author !== filterConfig.author) {
+        continue;
       }
-      if (filterConfig.dateFrom) {
+      if (
+        filterConfig.dateFrom &&
+        !(
+          Tweet.createdAt >= filterConfig.dateFrom &&
+          Tweet.createdAt <= filterConfig.dateTo
+        )
+      ) {
+        continue;
+      }
+      if (
+        filterConfig.text &&
+        !Tweet.text
+          .toLowerCase()
+          .includes(filterConfig.text.trim().toLowerCase())
+      ) {
+        continue;
+      }
+      if (filterConfig.hashtags) {
+        arrHashtags = filterConfig.hashtags.toLowerCase().trim().split("#");
         if (
-          !(
-            Tweet.createdAt >= filterConfig.dateFrom &&
-            Tweet.createdAt <= filterConfig.dateTo
+          !arrHashtags.every((Hashtag) =>
+            Tweet.text.toLowerCase().includes(Hashtag)
           )
         ) {
           continue;
         }
       }
-      if (filterConfig.text) {
-        if (
-          !Tweet.text
-            .toLowerCase()
-            .includes(filterConfig.text.trim().toLowerCase())
-        ) {
-          continue;
-        }
-      }
-      if (filterConfig.hashtags) {
-        arrHashtags = filterConfig.hashtags.toLowerCase().trim().split("#");
-        let indicator = false;
-        for (Hashtag of arrHashtags) {
-          if (!Tweet.text.toLowerCase().includes(Hashtag)) {
-            indicator = true;
-            break;
-          }
-        }
-        if (indicator) {
-          continue;
-        }
-      }
-      if (skip !== 0) {
-        skip--; //пропускаем твиты, пока счётчик "пропусков" не обнулится
-      } else {
-        //если необходимое количество твитов пропущено, заполняем массив
-        if (top !== 0) {
-          getNewArr.push(Tweet);
-          top--; //заполняя массив очередным твитом, уменьшаем счётчик твитов
-        } else {
-          break; //если необходимое количество твитов выведено (т.е. top === 0), выходим из цикла
-        }
-      }
+      getNewArr.push(Tweet);
     }
-    return getNewArr;
+    return getNewArr.slice(skip, skip + top);
   };
   const getTweet = function (id) {
-    for (let Tweet of arrTweets) {
-      if (id === Tweet.id) {
-        return Tweet;
-      }
-    }
+    let i = arrTweets.findIndex((tweet) => tweet.id === id);
+    return arrTweets[i];
   };
   const validateTweet = function (Tweet) {
     return (
@@ -148,10 +129,10 @@ const Module = (function () {
   };
   const editTweet = function (id, string) {
     /* я решил, что гораздо проще и эффективнее фильтровать входные данные
-        перед редактированием, нежели сначала редактировать твит, потом проверять
-        его на валидность и в случае неудачи отменять редактирование, а в случае
-        удачи сохранять изменения. таким образом, делаю проверку в ветвлении
-        вместо функции validateTweet */
+      перед редактированием, нежели сначала редактировать твит, потом проверять
+      его на валидность и в случае неудачи отменять редактирование, а в случае
+      удачи сохранять изменения. таким образом, делаю проверку в ветвлении
+      вместо функции validateTweet */
     if (
       getTweet(id) &&
       this.user === getTweet(id).author &&
@@ -165,12 +146,9 @@ const Module = (function () {
   };
   const removeTweet = function (id) {
     if (getTweet(id) && this.user === getTweet(id).author) {
-      for (let i = 0; i < arrTweets.length; i++) {
-        if (id === arrTweets[i].id) {
-          arrTweets.splice(i, 1);
-          return true;
-        }
-      }
+      let i = arrTweets.findIndex((tweet) => tweet.id === id);
+      arrTweets.splice(i, 1);
+      return true;
     }
     return false;
   };
