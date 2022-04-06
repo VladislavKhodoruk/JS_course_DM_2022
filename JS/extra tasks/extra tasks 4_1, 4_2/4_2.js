@@ -1,33 +1,38 @@
-function add(a, b = undefined) {
-  if (b === undefined) {
+function add(a, b) {
+  if (!b) {
     return add.bind(this, a);
   }
   return a + b;
 }
-function sub(a, b = null) {
-  if (b === undefined) {
+function sub(a, b) {
+  if (!b) {
     return sub.bind(this, a);
   }
   return a - b;
 }
-function mul(a, b = null) {
-  if (b === undefined) {
+function mul(a, b) {
+  if (!b) {
     return mul.bind(this, a);
   }
   return a * b;
 }
-function div(a, b = null) {
-  if (b === undefined) {
+function div(a, b) {
+  if (!b) {
     return div.bind(this, a);
   }
   return a / b;
 }
 
-//не разобрался до конца как сделать pipe
 // function pipe(){
-//     number = arguments[0];
-//     for(let i = 1; i < arguments.length; i++){
-//         number = arguments[i](number);
-//     }
-//     return result;
+//     let operations = [];
+//     for(let i = 0; i < arguments.length; i++){
+//         operations[i] = arguments[i];
+//     }
+//     return function(number){
+//         let result = number;
+//         for(let i = 0; i < operations.length; i++){
+//             result = operations[i](result);
+//         }
+//         return result;
+//     }
 // }
