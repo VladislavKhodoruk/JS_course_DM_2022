@@ -7,259 +7,115 @@
     <link rel = "shortcut icon" type="image/png" href = "../mockups/extra tasks/logo without pin.png"/>
 </head>
 <body>
-    <header>
-        <div class = "account">
+    <header id = "header">
+        <!-- <div class = "account">
             <span class="iconify" data-icon="ant-design:user-outlined" data-width="35" data-height="35"></span>
-            <span>Your account</span>
+            <span id = "user">Your account</span>
         </div>
         <img src = "../mockups/extra tasks/Logo.svg" class = "logo" alt = "logo"/>
         <button type="button" class="exit-button">
             <span id = "exit" class="iconify" data-icon="ion:exit-outline"></span>
-        </button>
+        </button> -->
     </header>
-    <main class="main-main">
-        <div class = "left-side">
-            <form class="enter-area">
-                <textarea name="write-twit" id="enter-area-txt" placeholder="Write a tweet..."></textarea>
-                <button type="button" class="tweet-comment-button">
-                    Tweet
-                    <span id="plus" class="iconify" data-icon="akar-icons:plus"></span>
-                </button>
-            </form>
-            <article>
-                <div class = "twit">
-                    <div class = "twit-top">
-                        <div class = "user">
-                            <span id = "user-photo" class="iconify" data-icon="ant-design:user-outlined"></span>
-                            <div class = "name-date">
-                                <p>Your account</p>
-                                <p class = "post-date">02.02.2022 11:53 pm</p>
+    <main class="main">
+        <div id = "mainPage">
+            <div class = "left-side" id = "left-side">
+                <!-- <form id="enter-area">
+                    <textarea name="write-twit" id="enter-area-txt" placeholder="Write a tweet..."></textarea>
+                    <button type="button" class="tweet-comment-button">
+                        Tweet
+                        <span id="plus" class="iconify" data-icon="akar-icons:plus"></span>
+                    </button>
+                </form>
+                <article id = "article">
+                    <div class = "twit">
+                        <div class = "twit-top">
+                            <div class = "user">
+                                <span id = "user-photo" class="iconify" data-icon="ant-design:user-outlined"></span>
+                                <div class = "name-date">
+                                    <p>Your account</p>
+                                    <p class = "post-date">02.02.2022 11:53 pm</p>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" class="edit-delete-button">
+                                    <span id = "edit" class="iconify" data-icon="eva:edit-outline"></span>
+                                </button>
+                                <button type="button" class="edit-delete-button">
+                                    <span id = "delete" class="iconify" data-icon="bx:trash"></span>
+                                </button>
                             </div>
                         </div>
-                        <div>
-                            <button type="button" class="edit-delete-button">
-                                <span id = "edit" class="iconify" data-icon="eva:edit-outline"></span>
-                            </button>
-                            <button type="button" class="edit-delete-button">
-                                <span id = "delete" class="iconify" data-icon="bx:trash"></span>
-                            </button>
+                        <p class = "text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                            Duis finibus nunc magna, vel fermentum lectus ultrices vitae. 
+                            Nullam eu sapien at diam volutpat vehicula et ut turpis. 
+                            Ut libero nisi, commodo id libero quis, fermentum luctus nulla. 
+                            Cras non augue non purus rhoncus egestas vel nec arcu. 
+                            Aenean ullamcorper nisi sed tellus venenatis commodo. 
+                            Quisque diam arcu, rhoncus eu luctus non, scelerisque vitae nibh. 
+                            Fusce volutpat sed ligula a sodales. Donec efficitur risus elit, 
+                            sed sodales enim mollis quis. <span class = "hashtag"> #fermentumeros#finibusenim</span>
+                        </p>
+                        <span class = "comments">
+                            <span id = "comment" class="iconify" data-icon="uil:comment-alt-message"></span>
+                            25
+                        </span>
+                    </div>
+                </article> -->
+            </div>
+            <nav id = "filter">
+                <!-- <form class = "form">
+                    <form class = "form">
+                        <p class="filter-header">Author</p>
+                        <input class = "text-area" type="text" name = "author" placeholder="Search...">
+                    </form>
+                    <form class = "form">
+                        <p class="filter-header">Date</p>
+                        <p class="from-to">From</p>
+                        <input class = "date" type = "date" name = "date-from">
+                        <p class="from-to">To</p>
+                        <input class = "date" type = "date" name = "date-to">
+                        <input class="reset-button" type="reset" value="Reset">
+                    </form>
+                    <form class = "form">
+                        <p class="filter-header">Text</p>
+                        <input class = "text-area" type="text" name = "text" placeholder="Search...">
+                    </form>
+                    <form class = "form">
+                        <p class="filter-header">Hashtag</p>
+                        <input class = "text-area" type="text" name = "hashtag" placeholder="Search...">
+                    </form>
+                    <input class="filter-button" type="submit" value="Filter">
+                </form> -->
+            </nav>
+        </div>
+        <div id = "tweetPage">
+            <!-- <div id="twit" class="twit">
+                <div class="twit-top">
+                    <div class="user">
+                        <span id="user-photo" class="iconify" data-icon="ant-design:user-outlined"></span>
+                        <div class="name-date">
+                            <p>Your account</p>
+                            <p class="post-date">02.02.2022 11:53 pm</p>
                         </div>
                     </div>
-                    <p class = "text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Duis finibus nunc magna, vel fermentum lectus ultrices vitae. 
-                        Nullam eu sapien at diam volutpat vehicula et ut turpis. 
-                        Ut libero nisi, commodo id libero quis, fermentum luctus nulla. 
-                        Cras non augue non purus rhoncus egestas vel nec arcu. 
-                        Aenean ullamcorper nisi sed tellus venenatis commodo. 
-                        Quisque diam arcu, rhoncus eu luctus non, scelerisque vitae nibh. 
-                        Fusce volutpat sed ligula a sodales. Donec efficitur risus elit, 
-                        sed sodales enim mollis quis. <span class = "hashtag"> #fermentumeros#finibusenim</span>
-                    </p>
-                    <span class = "comments">
-                        <span id = "comment" class="iconify" data-icon="uil:comment-alt-message"></span>
-                        25
-                    </span>
                 </div>
-                <div class = "twit">
-                    <div class = "twit-top">
-                        <div class = "user">
-                            <span id = "user-photo" class="iconify" data-icon="ant-design:user-outlined"></span>
-                            <div class = "name-date">
-                                <p>Peter Parker</p>
-                                <p class = "post-date">02.02.2022 11:55 pm</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class = "text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Duis finibus nunc magna, vel fermentum lectus ultrices vitae. 
-                        Nullam eu sapien at diam volutpat vehicula et ut turpis. 
-                        Ut libero nisi, commodo id libero quis, fermentum luctus nulla. 
-                        Cras non augue non purus rhoncus egestas vel nec arcu. 
-                        Aenean ullamcorper nisi sed tellus venenatis commodo. 
-                        Quisque diam arcu, rhoncus eu luctus non, scelerisque vitae nibh. 
-                        Fusce volutpat sed ligula a sodales. Donec efficitur risus elit, 
-                        sed sodales enim mollis quis.<span class = "hashtag"> #fermentumeros#venenatiscommodo#rhoncueuluctusnon</span>
-                    </p>
-                    <span class = "comments">
-                        <span id = "comment" class="iconify" data-icon="uil:comment-alt-message"></span>
-                        31
-                    </span>
-                </div>
-                <div class = "twit">
-                    <div class = "twit-top">
-                        <div class = "user">
-                            <span id = "user-photo" class="iconify" data-icon="ant-design:user-outlined"></span>
-                            <div class = "name-date">
-                                <p>Melon Musk</p>
-                                <p class = "post-date">03.02.2022 6:12 pm</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class = "text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Duis finibus nunc magna, vel fermentum lectus ultrices vitae. 
-                        Nullam eu sapien at diam volutpat vehicula et ut turpis. 
-                        Ut libero nisi, commodo id libero quis, fermentum luctus nulla. 
-                        Cras non augue non purus rhoncus egestas vel nec arcu. 
-                        Aenean ullamcorper nisi sed tellus venenatis commodo. 
-                        Quisque diam arcu, rhoncus eu luctus non, scelerisque vitae nibh. 
-                        Fusce volutpat sed ligula a sodales. Donec efficitur risus elit, 
-                        sed sodales enim mollis quis.<span class = "hashtag"> #fermentumeros#rhoncueuluctusnon</span>
-                    </p>
-                    <span class = "comments">
-                        <span id = "comment" class="iconify" data-icon="uil:comment-alt-message"></span>
-                        18
-                    </span>
-                </div>
-                <div class = "twit">
-                    <div class = "twit-top">
-                        <div class = "user">
-                            <span id = "user-photo" class="iconify" data-icon="ant-design:user-outlined"></span>
-                            <div class = "name-date">
-                                <p>Tonald Drump</p>
-                                <p class = "post-date">03.02.2022 7:00 pm</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class = "text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Duis finibus nunc magna, vel fermentum lectus ultrices vitae. 
-                        Nullam eu sapien at diam volutpat vehicula et ut turpis. 
-                        Ut libero nisi, commodo id libero quis, fermentum luctus nulla. 
-                        Cras non augue non purus rhoncus egestas vel nec arcu. 
-                        Aenean ullamcorper nisi sed tellus venenatis commodo. 
-                        Quisque diam arcu, rhoncus eu luctus non, scelerisque vitae nibh. 
-                        Fusce volutpat sed ligula a sodales. Donec efficitur risus elit, 
-                        sed sodales enim mollis quis.<span class = "hashtag"> #ligulaasodales#Donecefficitur#rhoncueuluctusnon</span>
-                    </p>
-                    <span class = "comments">
-                        <span id = "comment" class="iconify" data-icon="uil:comment-alt-message"></span>
-                        56
-                    </span>
-                </div>
-                <div class = "twit">
-                    <div class = "twit-top">
-                        <div class = "user">
-                            <span id = "user-photo" class="iconify" data-icon="ant-design:user-outlined"></span>
-                            <div class = "name-date">
-                                <p>Marge Simpson</p>
-                                <p class = "post-date">03.02.2022 8:39 pm</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class = "text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Duis finibus nunc magna, vel fermentum lectus ultrices vitae. 
-                        Nullam eu sapien at diam volutpat vehicula et ut turpis. 
-                        Ut libero nisi, commodo id libero quis, fermentum luctus nulla. 
-                        Cras non augue non purus rhoncus egestas vel nec arcu. 
-                        Aenean ullamcorper nisi sed tellus venenatis commodo. 
-                        Quisque diam arcu, rhoncus eu luctus non, scelerisque vitae nibh. 
-                        Fusce volutpat sed ligula a sodales. Donec efficitur risus elit, 
-                        sed sodales enim mollis quis.<span class = "hashtag"> #ligulaasodales#Donecefficitur</span>
-                    </p>
-                    <span class = "comments">
-                        <span id = "comment" class="iconify" data-icon="uil:comment-alt-message"></span>
-                        12
-                    </span>
-                </div>
-                <div class = "twit">
-                    <div class = "twit-top">
-                        <div class = "user">
-                            <span id = "user-photo" class="iconify" data-icon="ant-design:user-outlined"></span>
-                            <div class = "name-date">
-                                <p>Joe Bidon</p>
-                                <p class = "post-date">03.02.2022 10:02 pm</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class = "text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Duis finibus nunc magna, vel fermentum lectus ultrices vitae. 
-                        Nullam eu sapien at diam volutpat vehicula et ut turpis. 
-                        Ut libero nisi, commodo id libero quis, fermentum luctus nulla. 
-                        Cras non augue non purus rhoncus egestas vel nec arcu. 
-                        Aenean ullamcorper nisi sed tellus venenatis commodo. 
-                        Quisque diam arcu, rhoncus eu luctus non, scelerisque vitae nibh. 
-                        Fusce volutpat sed ligula a sodales. Donec efficitur risus elit, 
-                        sed sodales enim mollis quis.<span class = "hashtag"> #ipsumdolor</span>
-                    </p>
-                    <span class = "comments">
-                        <span id = "comment" class="iconify" data-icon="uil:comment-alt-message"></span>
-                        9
-                    </span>
-                </div>
-                <div class = "twit">
-                    <div class = "twit-top">
-                        <div class = "user">
-                            <span id = "user-photo" class="iconify" data-icon="ant-design:user-outlined"></span>
-                            <div class = "name-date">
-                                <p>Rachel Green</p>
-                                <p class = "post-date">04.02.2022 3:00 am</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class = "text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Duis finibus nunc magna, vel fermentum lectus ultrices vitae. 
-                        Nullam eu sapien at diam volutpat vehicula et ut turpis. 
-                        Ut libero nisi, commodo id libero quis, fermentum luctus nulla. 
-                        Cras non augue non purus rhoncus egestas vel nec arcu. 
-                        Aenean ullamcorper nisi sed tellus venenatis commodo. 
-                        Quisque diam arcu, rhoncus eu luctus non, scelerisque vitae nibh. 
-                        Fusce volutpat sed ligula a sodales. Donec efficitur risus elit, 
-                        sed sodales enim mollis quis.<span class = "hashtag"> #Aeneanullamcorper</span>
-                    </p>
-                    <span class = "comments">
-                        <span id = "comment" class="iconify" data-icon="uil:comment-alt-message"></span>
-                        13
-                    </span>
-                </div>
-                <div class = "twit">
-                    <div class = "twit-top">
-                        <div class = "user">
-                            <span id = "user-photo" class="iconify" data-icon="ant-design:user-outlined"></span>
-                            <div class = "name-date">
-                                <p>Sheldon Cooper</p>
-                                <p class = "post-date">04.02.2022 10:00 am</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class = "text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Duis finibus nunc magna, vel fermentum lectus ultrices vitae. 
-                        Nullam eu sapien at diam volutpat vehicula et ut turpis. 
-                        Ut libero nisi, commodo id libero quis, fermentum luctus nulla. 
-                        Cras non augue non purus rhoncus egestas vel nec arcu. 
-                        Aenean ullamcorper nisi sed tellus venenatis commodo. 
-                        Quisque diam arcu, rhoncus eu luctus non, scelerisque vitae nibh. 
-                        Fusce volutpat sed ligula a sodales. Donec efficitur risus elit, 
-                        sed sodales enim mollis quis.<span class = "hashtag"> #nisisedtellus#Nullameusapien</span>
-                    </p>
-                    <span class = "comments">
-                        <span id = "comment" class="iconify" data-icon="uil:comment-alt-message"></span>
-                        33
-                    </span>
-                </div>
-                <div class = "twit">
-                    <div class = "twit-top">
-                        <div class = "user">
-                            <span id = "user-photo" class="iconify" data-icon="ant-design:user-outlined"></span>
-                            <div class = "name-date">
-                                <p>Monica Geller</p>
-                                <p class = "post-date">04.02.2022 11:28 am</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class = "text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Duis finibus nunc magna, vel fermentum lectus ultrices vitae. 
-                        Nullam eu sapien at diam volutpat vehicula et ut turpis. 
-                        Ut libero nisi, commodo id libero quis, fermentum luctus nulla. 
-                        Cras non augue non purus rhoncus egestas vel nec arcu. 
-                        Aenean ullamcorper nisi sed tellus venenatis commodo. 
-                        Quisque diam arcu, rhoncus eu luctus non, scelerisque vitae nibh. 
-                        Fusce volutpat sed ligula a sodales. Donec efficitur risus elit, 
-                        sed sodales enim mollis quis.
-                    </p>
-                    <span class = "comments">
-                        <span id = "comment" class="iconify" data-icon="uil:comment-alt-message"></span>
-                        17
-                    </span>
-                </div>
+                <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                    Duis finibus nunc magna, vel fermentum lectus ultrices vitae. 
+                    Nullam eu sapien at diam volutpat vehicula et ut turpis. 
+                    Ut libero nisi, commodo id libero quis, fermentum luctus nulla. 
+                    Cras non augue non purus rhoncus egestas vel nec arcu. 
+                    Aenean ullamcorper nisi sed tellus venenatis commodo. 
+                    Quisque diam arcu, rhoncus eu luctus non, scelerisque vitae nibh. 
+                    Fusce volutpat sed ligula a sodales. Donec efficitur risus elit, 
+                    sed sodales enim mollis quis.<span class = "hashtag"> #fermentumeros#finibusenim</span>
+                </p>
+                <span class="comments">
+                    <span id="comment" class="iconify" data-icon="uil:comment-alt-message"></span>
+                    25
+                </span>
+            </div> -->
+            <!-- <article id="article-twit">
                 <div class = "twit">
                     <div class = "twit-top">
                         <div class = "user">
@@ -278,49 +134,28 @@
                         Aenean ullamcorper nisi sed tellus venenatis commodo. 
                         Quisque diam arcu, rhoncus eu luctus non, scelerisque vitae nibh. 
                         Fusce volutpat sed ligula a sodales. Donec efficitur risus elit, 
-                        sed sodales enim mollis quis.<span class = "hashtag"> #consecteturadipiscingelit</span>
+                        sed sodales enim mollis quis.<span class = "hashtag"> #fermentumeros#finibusenim</span>
                     </p>
-                    <span class = "comments">
-                        <span id = "comment" class="iconify" data-icon="uil:comment-alt-message"></span>
-                        57
-                    </span>
                 </div>
                 <button type="button" class="show-more-button">
                     Show more
                     <span id = "arrow" class="iconify" data-icon="ep:arrow-down-bold"></span>
                 </button>
-            </article>
+            </article> -->
+            <!-- <form id="enter-area-twit" class="enter-area">
+                <textarea name="write-twit" id="enter-area-txt" placeholder="Write a comment..."></textarea>
+                <button type="button" class="tweet-comment-button">
+                    Add comment
+                    <span id="plus" class="iconify" data-icon="akar-icons:plus"></span>
+                </button>
+            </form> -->
         </div>
-        <nav>
-            <form class = "form">
-                <form class = "form">
-                    <p class="filter-header">Author</p>
-                    <input class = "text-area" type="text" name = "author" placeholder="Search...">
-                </form>
-                <form class = "form">
-                    <p class="filter-header">Date</p>
-                    <p class="from-to">From</p>
-                    <input class = "date" type = "date" name = "date-from">
-                    <p class="from-to">To</p>
-                    <input class = "date" type = "date" name = "date-to">
-                    <input class="reset-button" type="reset" value="Reset">
-                </form>
-                <form class = "form">
-                    <p class="filter-header">Text</p>
-                    <input class = "text-area" type="text" name = "text" placeholder="Search...">
-                </form>
-                <form class = "form">
-                    <p class="filter-header">Hashtag</p>
-                    <input class = "text-area" type="text" name = "hashtag" placeholder="Search...">
-                </form>
-                <input class="filter-button" type="submit" value="Filter">
-            </form>
-        </nav>
     </main>
     <footer>
         <p>Pals Khodoruk Vladislav xodoruk@mail.ru</p>
         <time datetime="2022">28.02.2022</time>
     </footer>
     <script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
+    <script src = "../JS/task 5.js"></script>
 </body>
 </html>
