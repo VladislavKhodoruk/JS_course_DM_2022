@@ -40,6 +40,7 @@ header
     height: 12%;
     justify-content: space-between;
     padding: 0 2.5rem;
+    margin-bottom: 2rem;
 }
 .account
 {
@@ -68,11 +69,11 @@ header
     width: 3.5rem;
     color: var(--dark-p);
 }
-.main-main
+#mainPage
 {
     display: flex;
 }
-.main-twit
+#tweetPage
 {
     align-items: center;
     display: flex;
@@ -83,12 +84,14 @@ header
     margin-right: 2rem;
     width: 80%;
 }
-.enter-area
+#enter-area
 {
     background-color: #FFF;
     border: none;
     border-radius: var(--default-br);
-    margin: 2rem 0rem;
+    margin-bottom: 2rem;
+    margin-left: 0rem;
+    margin-right: 0rem;
     outline: none;
     padding: 1rem 1rem;
     width: 100%;
@@ -111,13 +114,23 @@ header
     resize: none;
     width: 100%;
 }
-.tweet-comment-button, .show-more-button
+.tweet-comment-button, .show-more-button, .sign-up-button
 {
     background-color: var(--dark-p);
     border: none;
     border-radius: 0.3rem;
     color: #FFF;
     font-size: 1.3rem;
+    padding: 0.2rem 0.4rem;
+}
+.log-in-button
+{
+    background-color: var(--light-p);
+    border: none;
+    border-radius: 0.3rem;
+    color: #FFF;
+    font-size: 1.3rem;
+    margin-left: 1rem;
     padding: 0.2rem 0.4rem;
 }
 #plus, #arrow
@@ -143,6 +156,7 @@ article
 {
     max-height: 25rem;
     min-height: 15rem;
+    width: 100%;
 }
 .twit
 {
