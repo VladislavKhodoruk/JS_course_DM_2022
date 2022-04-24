@@ -3,31 +3,32 @@ function sortByDate(a, b) {
   let dateB = new Date(b._createdAt);
   return dateA < dateB ? 1 : -1;
 }
-function doLocalStorage(ID) {
+function uuidv4() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+    (
+      c ^
+      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+    ).toString(16)
+  );
+}
+function doLocalStorage() {
   if (!localStorage.arrOfTweets) {
-    let defaultTweet1 = new Tweet(`${ID._id}`, "hello #js", "Jack");
+    let defaultTweet1 = new Tweet(`${uuidv4()}`, "hello #js", "Jack");
     defaultTweet1._createdAt = new Date(2022, 03, 16);
     defaultTweet1.comments = [];
-    ID.add();
-    ID.save();
 
-    let defaultTweet2 = new Tweet(`${ID._id}`, "hi#datamola", "Mike");
+    let defaultTweet2 = new Tweet(`${uuidv4()}`, "hi#datamola", "Mike");
     defaultTweet2._createdAt = new Date(2022, 03, 17);
     defaultTweet2.comments = [];
-    ID.add();
-    ID.save();
 
-    let defaultTweet3 = new Tweet(`${ID._id}`, "#code tweet", "John");
+    let defaultTweet3 = new Tweet(`${uuidv4()}`, "#code tweet", "John");
     defaultTweet3._createdAt = new Date(2022, 03, 18);
     defaultTweet3.comments = [];
-    ID.add();
-    ID.save();
 
     let arr = [defaultTweet1, defaultTweet2, defaultTweet3];
     localStorage.setItem("arrOfTweets", JSON.stringify(arr));
   }
 }
-
 function doText(text) {
   let newText = "";
   for (let i = 0; i < text.length; i++) {
@@ -46,20 +47,6 @@ function doText(text) {
     }
   }
   return newText;
-}
-class Id {
-  constructor(id) {
-    this._id = id;
-  }
-  add() {
-    this._id = String(Number(this._id) + 1);
-  }
-  save() {
-    localStorage.setItem("id", JSON.stringify(this._id));
-  }
-  restore() {
-    this._id = JSON.parse(localStorage.getItem("id"));
-  }
 }
 
 let pageStatus = ""; //переменная, которая показывает, на какой странице находимся
@@ -221,7 +208,6 @@ class FilterView {
           <input class = "date" type = "date" name = "date-from" id = "date-from">
           <p class="from-to">To</p>
           <input class = "date" type = "date" name = "date-to" id = "date-to">
-          <input class="reset-button" type="reset" value="Reset">
         </div>
         <div class = "form">
           <p class="filter-header">Text</p>
@@ -232,7 +218,7 @@ class FilterView {
           <input class = "text-area" type="text" name = "hashtag" placeholder="Search..." id = "hashtag">
         </div>
         <input class="filter-button" type="submit" value="Filter">
-        <button class="filter-button" type="button" id = "reset-filter-button">Reset all filters</button>
+        <input class="filter-button" type="reset" value="Reset" id = "reset-filter-button">
       </form>
     </nav>
    `;
@@ -456,8 +442,8 @@ class TweetCollection {
       if (
         filterConfig.dateFrom &&
         !(
-          tweet._createdAt >= filterConfig.dateFrom &&
-          tweet._createdAt <= filterConfig.dateTo
+          tweet._createdAt >= new Date(filterConfig.dateFrom) &&
+          tweet._createdAt <= new Date(filterConfig.dateTo)
         )
       ) {
         continue;
@@ -492,14 +478,12 @@ class TweetCollection {
   add(string) {
     if (this._user) {
       //неавторизованный пользователь не может писать твиты
-      let newTweet = new Tweet(`${ID._id}`, string.trim(), this._user);
+      let newTweet = new Tweet(`${uuidv4()}`, string.trim(), this._user);
       if (Tweet.validate(newTweet)) {
         //проверка твита на валидность
         this._arrTweets.push(newTweet);
         this._arrTweets.sort(sortByDate);
         this.save();
-        ID.add();
-        ID.save();
         return true;
       }
       return false;
@@ -537,14 +521,12 @@ class TweetCollection {
     const tweet = this.get(id);
     if (tweet && this._user) {
       //неавторизованный пользователь не может писать комментарии
-      let newComment = new Comment(`${ID._id}`, string.trim(), this._user);
+      let newComment = new Comment(`${uuidv4()}`, string.trim(), this._user);
       if (Comment.validate(newComment)) {
         //проверка комментария на валидность
         tweet.comments.push(newComment);
         tweet.comments.sort(sortByDate);
         this.save();
-        ID.add();
-        ID.save();
         return true;
       }
       return false;
@@ -570,6 +552,9 @@ class TweetCollection {
     this.save();
   }
 }
+class TweetFeedApiService {
+  constructor() {}
+}
 class TweetsController {
   constructor() {
     this._headerView = new HeaderView("header");
@@ -590,7 +575,6 @@ class TweetsController {
   setCurrentUser(user) {
     this._tweetCollection.setUser = user;
     this._headerView.display(user);
-    //this.getFeed();
     if (user) {
       document.querySelector(".exit-button").addEventListener("click", () => {
         //если пользователь авторизован, то появляется кнопка выхода из аккаунта
@@ -749,7 +733,6 @@ class TweetsController {
     if (
       document.querySelectorAll(".twit").length <
       this._tweetCollection._arrTweets.length
-      // this._tweetCollection.getPage(0, this._tweetCollection._arrTweets.length)
     ) {
       document.getElementById("article").innerHTML += `
       <button type="button" class="show-more-button">
@@ -810,11 +793,7 @@ class TweetsController {
     }
   }
 }
-let ID = new Id("0");
-if (localStorage.id) {
-  ID.restore();
-}
-doLocalStorage(ID);
+doLocalStorage();
 let t = new TweetsController();
 t.setCurrentUser("Vlad");
 t.getFeed();
