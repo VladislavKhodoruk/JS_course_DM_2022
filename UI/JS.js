@@ -1,8 +1,3 @@
-function sortByDate(a, b) {
-  let dateA = new Date(a._createdAt);
-  let dateB = new Date(b._createdAt);
-  return dateA < dateB ? 1 : -1;
-}
 function uuidv4() {
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
     (
@@ -12,21 +7,12 @@ function uuidv4() {
   );
 }
 function doLocalStorage() {
-  if (!localStorage.arrOfTweets) {
-    let defaultTweet1 = new Tweet(`${uuidv4()}`, "hello #js", "Jack");
-    defaultTweet1._createdAt = new Date(2022, 03, 16);
-    defaultTweet1.comments = [];
-
-    let defaultTweet2 = new Tweet(`${uuidv4()}`, "hi#datamola", "Mike");
-    defaultTweet2._createdAt = new Date(2022, 03, 17);
-    defaultTweet2.comments = [];
-
-    let defaultTweet3 = new Tweet(`${uuidv4()}`, "#code tweet", "John");
-    defaultTweet3._createdAt = new Date(2022, 03, 18);
-    defaultTweet3.comments = [];
-
-    let arr = [defaultTweet1, defaultTweet2, defaultTweet3];
-    localStorage.setItem("arrOfTweets", JSON.stringify(arr));
+  if (!localStorage.user) {
+    let user = {
+      userName: undefined,
+      token: undefined,
+    };
+    localStorage.setItem("user", JSON.stringify(user));
   }
 }
 function doText(text) {
@@ -52,21 +38,6 @@ function doText(text) {
 let pageStatus = ""; //переменная, которая показывает, на какой странице находимся
 
 let currentTweetId = ""; //переменная, которая хранит в себе id текущего твита (нужна для работы кнопки выхода на странице твита)
-
-class AllUsers {
-  constructor(arr) {
-    this.users = arr;
-  }
-  add(user) {
-    this.users.push(user);
-  }
-  save() {
-    localStorage.setItem("allUsers", JSON.stringify(this.users));
-  }
-  restore() {
-    this.users = JSON.parse(localStorage.getItem("allUsers"));
-  }
-}
 
 class HeaderView {
   constructor(id) {
@@ -335,225 +306,261 @@ class AuthorizationView {
     `;
   }
 }
-class Tweet {
-  constructor(id, text, author) {
-    this._id = id;
-    this.text = text;
-    this._createdAt = new Date();
-    this._author = author;
-    this.comments = [];
+class ErrorView {
+  constructor(id) {
+    this.errorPage = document.getElementById(id);
   }
-  get getId() {
-    return this._id;
-  }
-  get getText() {
-    return this.text;
-  }
-  set setText(string) {
-    this.text = string;
-  }
-  get getCreatedAt() {
-    return this._createdAt;
-  }
-  get getAuthor() {
-    return this._author;
-  }
-  static validate(tweet) {
-    return (
-      tweet.getId &&
-      tweet.getText &&
-      tweet.getCreatedAt &&
-      tweet.getAuthor &&
-      tweet.getText.length <= 280
-    );
-  }
-}
-class Comment {
-  constructor(id, text, author) {
-    this._id = id;
-    this.text = text;
-    this._createdAt = new Date();
-    this._author = author;
-  }
-  get getId() {
-    return this._id;
-  }
-  get getText() {
-    return this.text;
-  }
-  set setText(string) {
-    this.text = string;
-  }
-  get getCreatedAt() {
-    return this._createdAt;
-  }
-  get getAuthor() {
-    return this._author;
-  }
-  static validate(comment) {
-    return (
-      comment.getId &&
-      comment.getText &&
-      comment.getCreatedAt &&
-      comment.getAuthor &&
-      comment.getText.length <= 280
-    );
-  }
-}
-class TweetCollection {
-  constructor(arrTweets) {
-    this._arrTweets = [];
-    for (let tweet of arrTweets) {
-      if (Tweet.validate(tweet)) {
-        this._arrTweets.push(tweet);
-      }
-    }
-    this._user = undefined;
-  }
-  get getUser() {
-    return this._user;
-  }
-  set setUser(string) {
-    this._user = string;
-  }
-  save() {
-    localStorage.setItem("arrOfTweets", JSON.stringify(this._arrTweets));
-  }
-  restore() {
-    let tweetsFromLS = JSON.parse(localStorage.getItem("arrOfTweets"));
-    tweetsFromLS.forEach((tweet) => {
-      let newTweet = new Tweet(tweet._id, tweet.text, tweet._author);
-      newTweet._createdAt = new Date(tweet._createdAt);
-      newTweet.comments = tweet.comments;
-      this._arrTweets.push(newTweet);
-      this._arrTweets.sort(sortByDate);
-    });
-  }
-  getPage(skip = 0, top = 10, filterConfig = {}) {
-    this._arrTweets.sort(sortByDate);
-    let getNewArr = [];
-    for (let tweet of this._arrTweets) {
-      if (
-        filterConfig.author &&
-        tweet._author.toLowerCase() !== filterConfig.author.toLowerCase()
-      ) {
-        continue;
-      }
-      if (
-        filterConfig.dateFrom &&
-        !(
-          tweet._createdAt >= new Date(filterConfig.dateFrom) &&
-          tweet._createdAt <= new Date(filterConfig.dateTo)
-        )
-      ) {
-        continue;
-      }
-      if (
-        filterConfig.text &&
-        !tweet.text
-          .toLowerCase()
-          .includes(filterConfig.text.trim().toLowerCase())
-      ) {
-        continue;
-      }
-      if (filterConfig.hashtags) {
-        let arrHashtags = filterConfig.hashtags.toLowerCase().trim().split("#");
-        if (
-          !arrHashtags.every((Hashtag) =>
-            tweet.text.toLowerCase().includes(Hashtag)
-          )
-        ) {
-          continue;
-        }
-      }
-      getNewArr.push(tweet);
-    }
-    return getNewArr.slice(skip, skip + top);
-  }
-
-  get(id) {
-    let i = this._arrTweets.findIndex((tweet) => tweet._id === id);
-    return this._arrTweets[i];
-  }
-  add(string) {
-    if (this._user) {
-      //неавторизованный пользователь не может писать твиты
-      let newTweet = new Tweet(`${uuidv4()}`, string.trim(), this._user);
-      if (Tweet.validate(newTweet)) {
-        //проверка твита на валидность
-        this._arrTweets.push(newTweet);
-        this._arrTweets.sort(sortByDate);
-        this.save();
-        return true;
-      }
-      return false;
-    }
-    return false;
-  }
-  edit(id, string) {
-    const tweet = this.get(id);
-    if (
-      tweet &&
-      this._user === tweet._author &&
-      string &&
-      string.length <= 280
-    ) {
-      tweet.text = string;
-      this.save();
-      return true;
-    }
-    return false;
-  }
-  remove(id) {
-    const tweet = this.get(id);
-    if (tweet && this._user === tweet._author) {
-      for (let i = 0; i < this._arrTweets.length; i++) {
-        if (id === this._arrTweets[i]._id) {
-          this._arrTweets.splice(i, 1);
-          this.save();
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-  addComment(id, string) {
-    const tweet = this.get(id);
-    if (tweet && this._user) {
-      //неавторизованный пользователь не может писать комментарии
-      let newComment = new Comment(`${uuidv4()}`, string.trim(), this._user);
-      if (Comment.validate(newComment)) {
-        //проверка комментария на валидность
-        tweet.comments.push(newComment);
-        tweet.comments.sort(sortByDate);
-        this.save();
-        return true;
-      }
-      return false;
-    }
-    return false;
-  }
-  addAll(arrTweets) {
-    let notValidated = [];
-    for (let tweet of arrTweets) {
-      if (Tweet.validate(tweet)) {
-        this._arrTweets.push(tweet);
-        this._arrTweets.sort(sortByDate);
-        this.save();
-      } else {
-        notValidated.push(tweet);
-      }
-    }
-    return notValidated;
-  }
-  clear() {
-    this._arrTweets.length = 0;
-    this._user = undefined;
-    this.save();
+  display(error) {
+    pageStatus = "error";
+    this.errorPage.innerHTML = `
+    <div id ="errorPage">
+        <div id="window">
+          <img src = "../mockups/extra tasks/Logo.svg" class = "logo" alt = "logo"/>
+          <p>${error}</p>
+        </div>
+    </div>
+    `;
   }
 }
 class TweetFeedApiService {
-  constructor() {}
+  constructor(address) {
+    this._adress = address;
+  }
+  getTweets(skip = 0, top = 10, filterConfig = {}) {
+    fetch(
+      this.filter(
+        `${this._adress}/tweet?from=${skip}&count=${top}`,
+        filterConfig
+      )
+    )
+      .then((response) => response.json())
+      .then((arr) => {
+        let key = 1;
+        if (arr.length < top) {
+          key = 0;
+        }
+        t.getFeed(
+          skip,
+          top,
+          filterConfig,
+          arr.slice(skip, top),
+          JSON.parse(localStorage.getItem("user")).userName,
+          key
+        );
+      })
+      .catch((error) => {
+        t.getError(`${error.message}`);
+      });
+  }
+  login(name, password) {
+    let req = {
+      method: "POST",
+      headers: {
+        ["accept"]: "application/json",
+        ["Content-Type"]: "application/json",
+      },
+      body: JSON.stringify(`{login: ${name}, password: ${password}}`),
+    };
+    fetch(`${this._adress}/login`, req)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw Error(response.status);
+        }
+      })
+      .then((response) => {
+        let user = {
+          userName: name,
+          token: response.token,
+        };
+        localStorage.setItem("user", JSON.stringify(user));
+        t.setCurrentUser(name);
+        this.getTweets();
+      })
+      .catch((error) => {
+        if (error.message === "403") {
+          alert("Invalid name or password");
+        } else {
+          t.getError(`${error.message}`);
+        }
+      });
+  }
+  registration(name, password) {
+    let req = {
+      method: "POST",
+      headers: {
+        ["accept"]: "application/json",
+        ["Content-Type"]: "application/json",
+      },
+      body: JSON.stringify(`{login: ${name}, password: ${password}}`),
+    };
+    fetch(`${this._adress}/registration`, req)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw Error(response.status);
+        }
+      })
+      .then((response) => {
+        alert("you have successfully registered");
+        this.login(name, password);
+      })
+      .catch((error) => {
+        if (error.message === "409") {
+          alert("User with this name is already exist");
+        } else {
+          t.getError(`${error.message}`);
+        }
+      });
+  }
+  logout() {
+    let user = {
+      userName: undefined,
+      token: undefined,
+    };
+    localStorage.setItem("user", JSON.stringify(user));
+    t.setCurrentUser("");
+    this.getTweets();
+  }
+  filter(adress, filters) {
+    if (filters) {
+      if (filters.author) {
+        adress += `&author=${filters.author}`;
+      }
+      if (filters.text) {
+        adress += `&text=${filters.text}`;
+      }
+      if (filters.dateFrom) {
+        adress += `&dateFrom=${filters.dateFrom}&dateTo=${filters.dateTo}`;
+      }
+      if (filters.hashtags) {
+        adress += `&hashtags=${filters.hashtags}`;
+      }
+      return adress;
+    } else {
+      return adress;
+    }
+  }
+  getTweet(id, skip = 0, top = 10, filterConfig = {}) {
+    fetch(
+      this.filter(
+        `${this._adress}/tweet?from=${skip}&count=${top}`,
+        filterConfig
+      )
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        let user = response.find((tweet) => tweet.id === id);
+        t.showTweet(id);
+      })
+      .catch((error) => t.getError(`${error.message}`));
+  }
+  createTweet(text) {
+    let req = {
+      method: "POST",
+      headers: {
+        ["accept"]: "application/json",
+        ["authorization"]: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).token
+        }`,
+        ["Content-Type"]: "application/json",
+      },
+      body: JSON.stringify(`{text: ${text}}`),
+    };
+    fetch(`${this._adress}/tweet`, req)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw Error(response.status);
+        }
+      })
+      .then((response) => {
+        this.getTweets();
+      })
+      .catch((error) => {
+        t.getError(error.message);
+      });
+  }
+  editTweet(id, text) {
+    let req = {
+      method: "PUT",
+      headers: {
+        ["authorization"]: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).token
+        }`,
+        ["Content-Type"]: "application/json",
+      },
+      body: JSON.stringify(`{text: ${text}}`),
+    };
+    fetch(`${this._adress}/tweet/{${id}}`, req)
+      .then((response) => {
+        if (response.ok) {
+          return response.ok;
+        }
+      })
+      .then((response) => {
+        this.getTweets();
+      })
+      .catch((error) => {
+        t.getError(error.message);
+      });
+  }
+  removeTweet(id) {
+    let req = {
+      method: "DELETE",
+      headers: {
+        ["authorization"]: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).token
+        }`,
+        ["Content-Type"]: "application/json",
+      },
+      body: JSON.stringify(`{text: ${text}}`),
+    };
+    fetch(`${this._adress}/tweet/{${id}}`, req)
+      .then((response) => {
+        if (response.ok) {
+          return response.ok;
+        } else {
+          throw Error(response.status);
+        }
+      })
+      .then((response) => {
+        this.getTweets();
+      })
+      .catch((error) => {
+        t.getError(error.message);
+      });
+  }
+  createComment(id, text, skip = 0, top = 10, filterConfig = {}) {
+    let req = {
+      method: "POST",
+      headers: {
+        ["accept"]: "application/json",
+        ["authorization"]: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).token
+        }`,
+        ["Content-Type"]: "application/json",
+      },
+      body: JSON.stringify(`{text: ${text}}`),
+    };
+    fetch(`${this._adress}/tweet/{${id}}/comment`, req)
+      .then((response) => {
+        if (response.ok) {
+          return response.ok;
+        } else {
+          throw Error(response.status);
+        }
+      })
+      .then((response) => {
+        this.getTweet(id, skip, top, filterConfig);
+      })
+      .catch((error) => {
+        t.getError(error.message);
+      });
+  }
 }
 class TweetsController {
   constructor() {
@@ -563,17 +570,10 @@ class TweetsController {
     this._tweetView = new TweetView("main");
     this._registrationView = new RegistrationView("main");
     this._authorizationView = new AuthorizationView("main");
-    this._tweetCollection = new TweetCollection([]);
-    if (localStorage.arrOfTweets) {
-      this._tweetCollection.restore();
-    }
-    this._users = new AllUsers([]);
-    if (localStorage.allUsers) {
-      this._users.restore();
-    }
+    this._errorView = new ErrorView("main");
+    this._user = "";
   }
   setCurrentUser(user) {
-    this._tweetCollection.setUser = user;
     this._headerView.display(user);
     if (user) {
       document.querySelector(".exit-button").addEventListener("click", () => {
@@ -792,8 +792,12 @@ class TweetsController {
         });
     }
   }
+  getError(message) {
+    this._errorView.display(message);
+  }
 }
 doLocalStorage();
 let t = new TweetsController();
-t.setCurrentUser("Vlad");
-t.getFeed();
+let api = new TweetFeedApiService("https://jslabapi.datamola.com");
+t.setCurrentUser(JSON.parse(localStorage.getItem("user")).userName);
+api.getTweets();

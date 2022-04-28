@@ -327,7 +327,7 @@ footer
     justify-content: center;
     width: 100%;
 }
-#registrationPage, #authorizationPage
+#registrationPage, #authorizationPage, #errorPage
 {
     align-items: center;
     display: flex;
