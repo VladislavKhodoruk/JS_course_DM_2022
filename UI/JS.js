@@ -335,18 +335,7 @@ class TweetFeedApiService {
     )
       .then((response) => response.json())
       .then((arr) => {
-        let key = 1;
-        if (arr.length < top) {
-          key = 0;
-        }
-        t.getFeed(
-          skip,
-          top,
-          filterConfig,
-          arr.slice(skip, top),
-          JSON.parse(localStorage.getItem("user")).userName,
-          key
-        );
+        t.getFeed(skip, top, filterConfig, arr.slice(skip, top));
       })
       .catch((error) => {
         t.getError(`${error.message}`);
@@ -704,10 +693,9 @@ class TweetsController {
       this.getFeed();
     }
   }
-  getFeed(skip = 0, top = 10, filterConfig = {}) {
-    this._tweetFeedView.display(
-      this._tweetCollection.getPage(skip, top, filterConfig)
-    );
+  getFeed(skip = 0, top = 10, filterConfig = {}, arr) {
+    //теперь getFeed принимает массив от api, т.к. отсутствует коллекция
+    this._tweetFeedView.display(arr);
     this._filterView = new FilterView("mainPage");
     this._filterView.display();
     if (document.getElementById("tweet-button")) {
